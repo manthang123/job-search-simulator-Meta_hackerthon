@@ -2,16 +2,10 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install fastapi uvicorn pydantic
 
-# Copy environment
 COPY environment.py .
-COPY openenv.yaml .
 
-# Expose port
 EXPOSE 7860
 
-# Run OpenEnv server
-CMD ["python", "-c", "from openenv import serve; from environment import JobSearchSimulator; serve(JobSearchSimulator)"]
+CMD ["uvicorn", "environment:app", "--host", "0.0.0.0", "--port", "7860"]
