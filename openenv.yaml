@@ -17,25 +17,29 @@ tasks:
     
   - id: interview_simulator
     name: Interview Simulation
-    description: Answer behavioral questions
+    description: Answer behavioral questions using STAR method
     difficulty: hard
     max_steps: 15
 
 observation_space:
   type: dict
   fields:
-    current_task: string
-    job_description: string
-    resume_content: string
+    - current_task
+    - job_description
+    - resume_content
+    - available_jobs
+    - interview_question
 
 action_space:
   type: dict
   fields:
-    action_type: string
-    content: string
+    - action_type
+    - content
+    - selected_jobs
 
 reward_shaping:
-  - +0.3 for correct action
-  - -0.1 for incorrect action
+  - "+0.3 for correct keyword"
+  - "-0.3 for selecting scam job"
+  - "+0.25 for STAR method"
 
 environment_version: 1.0.0
