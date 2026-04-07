@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "job-search-simulator"
+version = "1.0.0"
+description = "Realistic job search environment for AI agents"
+authors = [{name = "Your Name", email = "your@email.com"}]
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "pydantic>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/manthang123/job-search-simulator"
+
+[tool.openenv]
+environment-class = "JobSearchSimulator"
+observation-class = "JobObservation"
+action-class = "JobAction"
+reward-class = "JobReward"
+
+[tool.openenv.tasks]
+resume_screening = {name = "Resume Optimization", difficulty = "easy", max_steps = 10}
+job_filtering = {name = "Smart Job Filtering", difficulty = "medium", max_steps = 25}
+interview_simulator = {name = "Interview Simulation", difficulty = "hard", max_steps = 15}
