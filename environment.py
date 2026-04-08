@@ -4,6 +4,12 @@ from typing import Dict, List, Optional
 from enum import Enum
 import uvicorn
 
+def main():
+    import uvicorn
+    uvicorn.run("server.app:app", host="0.0.0.0", port=7860, reload=False)
+
+if __name__ == "__main__":
+    main()
 # ============== FastAPI App ==============
 app = FastAPI(title="Job Search Simulator")
 
@@ -228,33 +234,28 @@ async def root():
         }
     }
 
-@app.get("/reset")
-async def reset():
+@app.get("/")
+def root():
+    return {"name": "Job Search Simulator"}
+
+@app.post("/reset")      # Changed from GET to POST
+def reset():
     global env_instance
     env_instance = JobSearchSimulator()
     obs = env_instance.reset()
     return {"status": "ok", "observation": obs.dict()}
 
-@app.post("/step")
-async def step(action: JobAction):
+@app.post("/step")       # POST is correct
+def step(action: JobAction):
     global env_instance
     result = env_instance.step(action)
     return {
         "observation": result.observation.dict(),
         "reward": result.reward.value,
-        "done": result.done,
-        "info": result.info
+        "done": result.done
     }
 
-@app.get("/state")
-async def get_state():
+@app.get("/state")       # GET is correct
+def state():
     global env_instance
     return env_instance.get_state()
-
-@app.post("/task/{task_id}")
-async def set_task(task_id: str):
-    global env_instance
-    if task_id in ["resume_screening", "job_filtering", "interview_simulator"]:
-        env_instance = JobSearchSimulator(task_id)
-        return {"status": "ok", "task": task_id}
-    raise HTTPException(status_code=400, detail="Invalid task")
